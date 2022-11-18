@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from app.dependencies import CheckoutHandler
 
 router = APIRouter(
     prefix="/checkout",
@@ -8,7 +10,8 @@ router = APIRouter(
 
 
 @router.post("/")
-async def checkout():
+async def create_checkout(checkout: CheckoutHandler = Depends()):
+    checkout.create()
     return {
-        "price": 360
+        "price": checkout.total_price
     }
