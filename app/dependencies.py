@@ -30,4 +30,18 @@ class CheckoutHandler:
 
     @classmethod
     def calculate_discounted_price(cls, checkout_line):
-        return 200
+        if "discount" not in checkout_line:
+            ...
+            # TODO: error handling
+
+        amount = checkout_line["amount"]
+        unit_price = checkout_line["unit_price"]
+        discount = checkout_line["discount"]
+        discount_amount_required = discount["amount_required"]
+        discounted_price = discount["discounted_price"]
+
+        num_of_applicable_discounts = amount // discount_amount_required
+        discounted_items_price = num_of_applicable_discounts * discounted_price
+        not_discounted_items_price = (amount % discount_amount_required) * unit_price
+
+        return discounted_items_price + not_discounted_items_price
