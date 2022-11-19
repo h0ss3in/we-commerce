@@ -82,3 +82,20 @@ def test_checkout_not_existing_item():
     assert response.json() == {
         "detail": "Item 005 does not exist!"
     }
+
+
+def test_checkout_combination_of_existing_and_not_existing_items():
+    response = client.post(
+        "/checkout/",
+        json=[
+            "001",
+            "003",
+            "007",
+            "004",
+            "006"
+        ]
+    )
+    assert response.status_code == 400
+    assert response.json() == {
+        "detail": "Item 007 does not exist!"
+    }
