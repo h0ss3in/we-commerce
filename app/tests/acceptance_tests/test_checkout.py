@@ -78,7 +78,7 @@ def test_checkout_not_existing_item():
             "005"
         ]
     )
-    assert response.status_code == 200
+    assert response.status_code == 400
     assert response.json() == {
-        "price": 100
+        "detail": "Item does not exist"
     }
