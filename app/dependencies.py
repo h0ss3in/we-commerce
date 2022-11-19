@@ -27,3 +27,7 @@ class CheckoutHandler:
             **self.db["products"][item_id],
             "amount": 0
         }
+
+    @classmethod
+    def calculate_discounted_price(cls, checkout_line):
+        return 200

@@ -62,3 +62,9 @@ def test_calculate_total_price():
     checkout.create_checkout_lines()
     checkout.calculate_total_price()
     assert checkout.total_price == 360
+
+
+def test_calculate_discounted_price():
+    checkout = CheckoutHandler(items=["001", "001", "001", "004", "003"])
+    checkout.create_checkout_lines()
+    assert checkout.calculate_discounted_price(checkout.checkout_lines["001"]) == 200
