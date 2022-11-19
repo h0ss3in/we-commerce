@@ -8,7 +8,7 @@ def test_initial_checkout():
     assert checkout.total_price == 0
 
 
-def test_create_checkout():
+def test_create_checkout_lines():
     checkout = CheckoutHandler(items=["001", "002", "001", "004", "003"])
     checkout.create_checkout_lines()
     assert checkout.checkout_lines == {
@@ -41,3 +41,24 @@ def test_create_checkout():
             "unit_price": 30
         },
     }
+
+
+def test_init_checkout_line():
+    checkout = CheckoutHandler(items=["001", "002", "001", "004", "003"])
+    checkout.init_checkout_line("001")
+    assert checkout.checkout_lines["001"] == {
+        "name": "Rolex",
+        "amount": 0,
+        "unit_price": 100,
+        "discount": {
+            "amount_required": 3,
+            "discounted_price": 200
+        }
+    }
+
+
+def test_calculate_total_price():
+    checkout = CheckoutHandler(items=["001", "002", "001", "004", "003"])
+    checkout.create_checkout_lines()
+    checkout.calculate_total_price()
+    assert checkout.total_price == 360
