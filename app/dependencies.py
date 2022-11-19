@@ -1,3 +1,6 @@
+from fastapi import HTTPException
+
+from app.constants.errors import Errors
 from app.database import database
 
 
@@ -26,10 +29,21 @@ class CheckoutHandler:
         self.total_price = total_price
 
     def init_checkout_line(self, item_id):
-        self.checkout_lines[item_id] = {
-            **self.db["products"][item_id],
-            "amount": 0
-        }
+        try:
+            self.checkout_lines[item_id] = {
+                **self.db["products"][item_id],
+                "amount": 0
+            }
+        except KeyError:
+            self.raise_http_error(
+                Errors.ITEM_DOES_NOT_EXIST.format(item_id)
+            )
+
+    def raise_http_error(self, message):
+        raise HTTPException(
+            status_code=400,
+            detail=message
+        )
 
     @classmethod
     def calculate_checkout_line_price(cls, checkout_line):
