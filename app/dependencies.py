@@ -1,9 +1,13 @@
+from app.database import database
+
+
 class CheckoutHandler:
 
     def __init__(self, items: list[str]):
         self.item_ids = items
         self.checkout_lines = {}
         self.total_price = 0
+        self.db = database
 
     def create(self):
         self.create_checkout_lines()
@@ -11,29 +15,10 @@ class CheckoutHandler:
         self.total_price = 360
 
     def create_checkout_lines(self):
-        self.checkout_lines = {
-            "001": {
-                "amount": 2,
-                "unit_price": 100,
-                "discount": {
-                    "amount_required": 3,
-                    "discounted_price": 200
+        for item_id in self.item_ids:
+            if item_id not in self.checkout_lines:
+                self.checkout_lines[item_id] = {
+                    **self.db["products"][item_id],
+                    "amount": 0
                 }
-            },
-            "002": {
-                "amount": 1,
-                "unit_price": 80,
-                "discount": {
-                    "amount_required": 2,
-                    "discounted_price": 120
-                }
-            },
-            "003": {
-                "amount": 1,
-                "unit_price": 50
-            },
-            "004": {
-                "amount": 1,
-                "unit_price": 30
-            },
-        }
+            self.checkout_lines[item_id]["amount"] += 1

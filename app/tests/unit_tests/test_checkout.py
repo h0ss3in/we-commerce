@@ -13,6 +13,7 @@ def test_create_checkout():
     checkout.create_checkout_lines()
     assert checkout.checkout_lines == {
         "001": {
+            "name": "Rolex",
             "amount": 2,
             "unit_price": 100,
             "discount": {
@@ -21,6 +22,7 @@ def test_create_checkout():
             }
         },
         "002": {
+            "name": "Michael Kors",
             "amount": 1,
             "unit_price": 80,
             "discount": {
@@ -29,10 +31,12 @@ def test_create_checkout():
             }
         },
         "003": {
+            "name": "Swatch",
             "amount": 1,
             "unit_price": 50
         },
         "004": {
+            "name": "Casio",
             "amount": 1,
             "unit_price": 30
         },
