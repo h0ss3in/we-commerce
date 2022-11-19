@@ -22,10 +22,7 @@ class CheckoutHandler:
     def calculate_total_price(self):
         total_price = 0
         for checkout_line in self.checkout_lines.values():
-            if "discount" in checkout_line:
-                total_price += self.calculate_discounted_price(checkout_line)
-            else:
-                total_price += checkout_line["amount"] * checkout_line["unit_price"]
+            total_price += self.calculate_checkout_line_price(checkout_line)
         self.total_price = total_price
 
     def init_checkout_line(self, item_id):
@@ -35,13 +32,13 @@ class CheckoutHandler:
         }
 
     @classmethod
-    def calculate_discounted_price(cls, checkout_line):
-        if "discount" not in checkout_line:
-            ...
-            # TODO: error handling
-
+    def calculate_checkout_line_price(cls, checkout_line):
         amount = checkout_line["amount"]
         unit_price = checkout_line["unit_price"]
+
+        if "discount" not in checkout_line:
+            return amount * unit_price
+
         discount = checkout_line["discount"]
         discount_amount_required = discount["amount_required"]
         discounted_price = discount["discounted_price"]
