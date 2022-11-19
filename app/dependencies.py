@@ -20,7 +20,13 @@ class CheckoutHandler:
             self.checkout_lines[item_id]["amount"] += 1
 
     def calculate_total_price(self):
-        self.total_price = 360
+        total_price = 0
+        for checkout_line in self.checkout_lines.values():
+            if "discount" in checkout_line:
+                total_price += self.calculate_discounted_price(checkout_line)
+            else:
+                total_price += checkout_line["amount"] * checkout_line["unit_price"]
+        self.total_price = total_price
 
     def init_checkout_line(self, item_id):
         self.checkout_lines[item_id] = {
